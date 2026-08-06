@@ -1,0 +1,11 @@
+Add these files to this folder:
+
+logo.jpg
+hero1.jpg  hero2.jpg  hero3.jpg  hero4.jpg
+hero5.jpg  hero6.jpg  hero7.jpg  hero8.jpg
+sets.jpg
+minifigures.jpg
+rev1.jpg  rev2.jpg  rev3.jpg  rev4.jpg  rev5.jpg
+rev6.jpg  rev7.jpg  rev8.jpg  rev9.jpg  rev10.jpg
+
+See README.md at the project root for what each file is used for.

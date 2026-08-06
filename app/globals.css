@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: theme("colors.paper");
+  color: theme("colors.ink.DEFAULT");
+}
+
+@layer base {
+  * {
+    @apply border-line;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.500");
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-data uppercase tracking-[0.18em] text-brand-600;
+  }
+
+  .stud-tag {
+    @apply inline-flex items-center rounded-none bg-brand-50 text-brand-700 text-[11px] font-data font-medium px-2.5 py-1 tracking-wide;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-none bg-ink px-3 py-2 text-[11px] font-semibold text-white transition-all duration-200 hover:bg-brand-700 active:scale-[0.98] shadow-soft whitespace-nowrap;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-none bg-stud px-5 py-2.5 text-sm font-semibold text-ink transition-all duration-200 hover:bg-stud-dark active:scale-[0.98] shadow-soft;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink transition-all duration-200 hover:border-brand-300 hover:text-brand-700 active:scale-[0.98];
+  }
+
+  .card-surface {
+    @apply bg-surface rounded-none border border-line shadow-card;
+  }
+
+  .container-page {
+    @apply container;
+  }
+}
+
+/* Subtle brick-stud texture used sparingly as the site's signature motif */
+.stud-strip {
+  background-image: theme("backgroundImage.stud-row");
+  background-size: 22px 22px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
