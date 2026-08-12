@@ -433,4 +433,4 @@ values
 ('40892-1','Kanto Region Badge Collection','minifigure','Pokémon','pokemon','Promotional','promotional','Licensed',2026,312,'8 gym badges display',NULL,NULL,'18+','Box','26.2 x 19.1 x 6.1 cm','LEGO exclusive','https://images.brickset.com/sets/images/40892-1.jpg','https://brickset.com/sets/40892-1',false),
 ('40911-1','Mini Pokémon Centre','minifigure','Pokémon','pokemon','Promotional','promotional','Licensed',2026,233,'Pokémon Centre display',NULL,NULL,'18+','Box','19.1 x 14.1 x 6.1 cm','Insiders Reward','https://images.brickset.com/sets/images/40911-1.jpg','https://brickset.com/sets/40911-1',false),
 ('40868-1','Up-Scaled Red Minifigure','minifigure','Pokémon','pokemon','Up-Scaled Minifigure','up-scaled-minifigure','Licensed',2026,930,'Display stand','£69.99, $79.99, €79.99','7.5p, 8.6c, 8.6c','10+','Box','26.2 x 38.2 x 9.4 cm','Retail','https://images.brickset.com/sets/images/40868-1.jpg','https://brickset.com/sets/40868-1',false)
-on conflict (number, type) do nothing;
+on conflict (number, type) do nothing
