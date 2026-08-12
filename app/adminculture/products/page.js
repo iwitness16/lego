@@ -281,7 +281,7 @@ export default function AdminProducts() {
                   );
                   return dup
                     ? <span className="text-[10px] text-clay font-semibold mt-0.5">
-                        ⚠ Already exists: "{dup.name}"
+                        ⚠ Already exists: &quot;{dup.name}&quot;
                       </span>
                     : <span className="text-[10px] text-leaf font-semibold mt-0.5">✓ Available</span>;
                 })()}

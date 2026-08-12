@@ -27,6 +27,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://legobrickslink.com"
+  ),
   title: "LegoBricksLink — LEGO Sets & Minifigures, organized by theme",
   description:
     "Browse LEGO sets and minifigures by theme and subtheme, with full spec sheets on every product — pieces, packaging, designer, and price.",

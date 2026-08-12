@@ -139,7 +139,6 @@ export default function SearchBar({ onClose, autoFocus = false }) {
           className="w-full bg-transparent text-sm text-ink placeholder:text-ink-muted focus:outline-none"
           aria-label="Search products"
           aria-autocomplete="list"
-          aria-expanded={open}
         />
         {query && (
           <button
