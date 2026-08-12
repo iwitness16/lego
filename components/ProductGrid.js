@@ -1,9 +1,9 @@
 import ProductCard from "./ProductCard";
 
-export default function ProductGrid({ products }) {
+export default function ProductGrid({ products, highlightId = null }) {
   if (!products?.length) {
     return (
-      <p className="rounded-xl2 border border-dashed border-line bg-paper p-10 text-center text-sm text-ink-muted">
+      <p className="border border-dashed border-line bg-paper p-10 text-center text-sm text-ink-muted">
         No products found in this subtheme yet.
       </p>
     );
@@ -12,7 +12,11 @@ export default function ProductGrid({ products }) {
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          highlight={highlightId === product.id}
+        />
       ))}
     </div>
   );

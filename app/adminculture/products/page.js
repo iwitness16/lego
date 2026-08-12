@@ -122,6 +122,22 @@ export default function AdminProducts() {
     if (!form.number || !form.name || !form.theme || !form.subtheme) {
       setError("Number, name, theme, and subtheme are required."); return;
     }
+
+    // Client-side duplicate check — warn before hitting the API
+    if (!editId) {
+      const duplicate = products.find(
+        (p) => p.number?.toLowerCase() === form.number.trim().toLowerCase()
+             && p.type === form.type
+      );
+      if (duplicate) {
+        setError(
+          `Product number "${form.number}" already exists as a ${form.type} ("${duplicate.name}"). ` +
+          `Each number must be unique per type. Use a different number or edit the existing product.`
+        );
+        return;
+      }
+    }
+
     setSaving(true);
     try {
       const url = editId ? `/api/adminculture/products/${editId}` : "/api/adminculture/products";
@@ -133,7 +149,17 @@ export default function AdminProducts() {
       });
       if (!res.ok) {
         const j = await res.json();
-        setError(j.error || "Save failed"); return;
+        // Surface duplicate key error from Postgres in a friendly way
+        const msg = j.error || "Save failed";
+        if (msg.includes("products_number_type_idx") || msg.includes("duplicate key")) {
+          setError(
+            `Product number "${form.number}" already exists for type "${form.type}". ` +
+            `Please use a different number or switch the type.`
+          );
+        } else {
+          setError(msg);
+        }
+        return;
       }
       await load();
       setShowForm(false);
@@ -245,7 +271,21 @@ export default function AdminProducts() {
             <form onSubmit={handleSave} className="p-5 grid grid-cols-2 gap-4">
               {error && <p className="col-span-2 border border-clay/40 bg-clay/10 px-3 py-2 text-sm text-clay">{error}</p>}
 
-              <Field label="Number *"><Input value={form.number} onChange={set("number")} placeholder="e.g. 10351-1" /></Field>
+              <Field label="Number *">
+                <Input value={form.number} onChange={set("number")} placeholder="e.g. 10351-1" />
+                {/* Live duplicate indicator */}
+                {!editId && form.number && (() => {
+                  const dup = products.find(
+                    (p) => p.number?.toLowerCase() === form.number.trim().toLowerCase()
+                         && p.type === form.type
+                  );
+                  return dup
+                    ? <span className="text-[10px] text-clay font-semibold mt-0.5">
+                        ⚠ Already exists: "{dup.name}"
+                      </span>
+                    : <span className="text-[10px] text-leaf font-semibold mt-0.5">✓ Available</span>;
+                })()}
+              </Field>
               <Field label="Type *">
                 <select value={form.type} onChange={set("type")} className="w-full border border-line bg-paper px-2.5 py-1.5 text-sm focus:outline-none">
                   <option value="set">Set</option>

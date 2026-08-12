@@ -6,6 +6,8 @@ import { useCart } from "@/components/CartProvider";
 import { formatUSD, usdPrice } from "@/lib/format";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
+const MIN_ORDER = 100;
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal, hydrated, clearCart } =
     useCart();
@@ -146,9 +148,43 @@ export default function CartPage() {
               <span>Estimated total</span>
               <span>{formatUSD(subtotal)}</span>
             </div>
-            <button type="button" className="btn-accent mt-6 w-full">
-              Proceed to checkout
-            </button>
+
+            {/* Minimum order progress */}
+            {subtotal < MIN_ORDER && (
+              <div className="mt-5">
+                <div className="flex items-center justify-between mb-1.5">
+                  <p className="text-xs font-medium text-ink-soft">Minimum order progress</p>
+                  <p className="text-xs font-semibold text-ink">{formatUSD(subtotal)} / $100.00</p>
+                </div>
+                <div className="h-2 w-full overflow-hidden bg-line">
+                  <div
+                    className="h-full bg-stud transition-all duration-500"
+                    style={{ width: `${Math.min((subtotal / MIN_ORDER) * 100, 100)}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-stud-dark">
+                  Add <span className="font-semibold">{formatUSD(MIN_ORDER - subtotal)}</span> more to reach the $100.00 minimum.
+                </p>
+              </div>
+            )}
+
+            {subtotal >= MIN_ORDER ? (
+              <button
+                type="button"
+                className="btn-accent mt-6 w-full"
+                onClick={() => window.location.href = "/checkout"}
+              >
+                Proceed to checkout
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="mt-6 w-full bg-line py-2.5 text-sm font-semibold text-ink-muted cursor-not-allowed"
+              >
+                $100.00 minimum required
+              </button>
+            )}
             <p className="mt-3 text-center text-[11px] text-ink-muted">
               Taxes calculated at checkout. Secure payment processing.
             </p>

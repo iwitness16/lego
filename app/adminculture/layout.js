@@ -9,9 +9,10 @@ const AdminCtx = createContext(null);
 export function useAdmin() { return useContext(AdminCtx); }
 
 const NAV = [
-  { href: "/adminculture", label: "Dashboard", exact: true },
-  { href: "/adminculture/products", label: "Products" },
-  { href: "/adminculture/themes", label: "Themes" },
+  { href: "/adminculture",           label: "Dashboard", exact: true },
+  { href: "/adminculture/orders",    label: "Orders" },
+  { href: "/adminculture/products",  label: "Products" },
+  { href: "/adminculture/themes",    label: "Themes" },
   { href: "/adminculture/subthemes", label: "Subthemes" },
 ];
 

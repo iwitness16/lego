@@ -6,6 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Search-result highlight pulse animation ── */
+@keyframes highlight-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(42,95,184,0.55); }
+  30%  { box-shadow: 0 0 0 10px rgba(42,95,184,0.30); }
+  60%  { box-shadow: 0 0 0 6px  rgba(42,95,184,0.15); }
+  100% { box-shadow: 0 0 0 0   rgba(42,95,184,0); }
+}
+.animate-highlight {
+  animation: highlight-pulse 2.4s ease-out forwards;
+}
+
 body {
   background-color: theme("colors.paper");
   color: theme("colors.ink.DEFAULT");

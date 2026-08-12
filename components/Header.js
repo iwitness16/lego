@@ -4,12 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import CartIcon from "./CartIcon";
+import SearchBar from "./SearchBar";
 
 const NAV_LINKS = [
-  { href: "/sets", label: "Sets" },
-  { href: "/minifigures", label: "Minifigures" },
-  { href: "/#reviews", label: "Reviews" },
-  { href: "/#newsletter", label: "Contact" },
+  { href: "/sets",         label: "Sets" },
+  { href: "/minifigures",  label: "Minifigures" },
+  { href: "/#reviews",     label: "Reviews" },
+  { href: "/#newsletter",  label: "Contact" },
 ];
 
 export default function Header() {
@@ -18,7 +19,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur">
 
-      {/* ── Top row: logo · nav · cart · hamburger ── */}
+      {/* ── Top row: logo · nav · search · cart · hamburger ── */}
       <div className="container-page flex h-[88px] items-center justify-between gap-4">
 
         {/* Logo */}
@@ -48,17 +49,9 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Desktop search — hidden on mobile, shown md+ */}
-        <div className="hidden md:flex flex-1 max-w-sm items-center border border-line bg-paper px-3 py-2">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2 shrink-0 text-ink-muted">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            placeholder="Search sets, minifigures..."
-            className="w-full bg-transparent text-sm text-ink placeholder:text-ink-muted focus:outline-none"
-          />
+        {/* Desktop live search — hidden on mobile */}
+        <div className="hidden md:block flex-1 max-w-sm relative">
+          <SearchBar />
         </div>
 
         {/* Right controls */}
@@ -82,19 +75,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ── Mobile search row — full width, below top bar, hidden md+ ── */}
+      {/* ── Mobile search row — full width, below top bar ── */}
       <div className="md:hidden border-t border-line bg-white px-4 py-2">
-        <div className="flex w-full items-center border border-line bg-paper px-3 py-2">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2 shrink-0 text-ink-muted">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            placeholder="Search sets, minifigures..."
-            className="w-full bg-transparent text-sm text-ink placeholder:text-ink-muted focus:outline-none"
-          />
-        </div>
+        <SearchBar onClose={() => setOpen(false)} />
       </div>
 
       {/* ── Mobile nav drawer ── */}

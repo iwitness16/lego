@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "./CartProvider";
 import { formatUSD, usdPrice } from "@/lib/format";
 
@@ -19,12 +19,35 @@ function Spec({ label, value }) {
   );
 }
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, highlight = false }) {
   const { addItem } = useCart();
-  const router = useRouter();
-  const [justAdded, setJustAdded] = useState(false);
+  const router      = useRouter();
+  const cardRef     = useRef(null);
+
+  const [justAdded,  setJustAdded]  = useState(false);
+  const [glowing,    setGlowing]    = useState(false);
+
   const price = usdPrice(product.rrp);
   const isSet = product.type === "set";
+
+  // Scroll to this card and flash it when it is the search target
+  useEffect(() => {
+    if (!highlight || !cardRef.current) return;
+
+    // Small delay lets the page finish painting first
+    const t = setTimeout(() => {
+      cardRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block:    "center",
+      });
+      setGlowing(true);
+      // Remove ring after animation completes
+      const off = setTimeout(() => setGlowing(false), 2600);
+      return () => clearTimeout(off);
+    }, 120);
+
+    return () => clearTimeout(t);
+  }, [highlight]);
 
   function handleAddToCart() {
     addItem(product, 1);
@@ -33,8 +56,16 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-none border border-line bg-surface shadow-card transition-shadow duration-300 hover:shadow-lift">
-      {/* Image area — fixed aspect, no padding so image fills edge-to-edge */}
+    <article
+      ref={cardRef}
+      id={`product-${product.id}`}
+      className={`group flex flex-col overflow-hidden rounded-none border bg-surface shadow-card transition-shadow duration-300 hover:shadow-lift ${
+        glowing
+          ? "border-brand-500 ring-2 ring-brand-400 ring-offset-1 animate-highlight"
+          : "border-line"
+      }`}
+    >
+      {/* Image area */}
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-paper">
         <Image
           src={product.image}
@@ -51,11 +82,16 @@ export default function ProductCard({ product }) {
             {product.availability}
           </span>
         )}
+        {/* Search-match badge */}
+        {highlight && (
+          <span className="absolute bottom-1.5 left-1.5 bg-brand-600 px-2 py-0.5 text-[8px] font-semibold uppercase tracking-wide text-white">
+            Search result
+          </span>
+        )}
       </div>
 
       {/* Body */}
       <div className="flex flex-1 flex-col p-2">
-        {/* Theme + Name — fixed height */}
         <div className="mb-2">
           <p className="text-[9px] font-medium text-brand-600 leading-tight truncate">
             {product.theme} · {product.subtheme}
@@ -65,20 +101,18 @@ export default function ProductCard({ product }) {
           </h3>
         </div>
 
-        {/* Specs — always 3 rows × 2 cols so every card is same height */}
         <dl className="grid grid-cols-2 gap-x-2 gap-y-1 border-y border-line py-1.5 mb-2">
           <Spec label="Pieces" value={product.pieces?.toLocaleString()} />
           {isSet
             ? <Spec label="Minifigs" value={product.minifigs > 0 ? product.minifigs : "—"} />
-            : <Spec label="Access." value={product.accessories} />
+            : <Spec label="Access."  value={product.accessories} />
           }
-          <Spec label="Age" value={product.ageRange} />
-          <Spec label="Year" value={product.year} />
-          <Spec label="Pack." value={product.packaging} />
+          <Spec label="Age"      value={product.ageRange} />
+          <Spec label="Year"     value={product.year} />
+          <Spec label="Pack."    value={product.packaging} />
           <Spec label="Designer" value={product.designer || "LEGO Team"} />
         </dl>
 
-        {/* Price + button — pinned to bottom, button never wraps */}
         <div className="mt-auto flex items-center justify-between gap-1">
           <div className="min-w-0">
             <p className="font-display text-[13px] font-semibold text-ink leading-tight">
